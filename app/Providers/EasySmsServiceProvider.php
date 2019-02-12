@@ -24,16 +24,16 @@ class EasySmsServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //绑定到容器的对象只会被解析一次，之后的调用都返回相同的实例，以下两种写法等同
+        //绑定到容器的对象只会被解析一次，之后的调用都返回相同的实例，第二种写法会报错
+        //Unresolvable dependency resolving [Parameter #0 [ <required> array $config ]] in class Overtrue\\EasySms\\EasySms
         //绑定后可以在其他地方用app函数调用实例，$sms = app('easysms');
-        // $this->app->singleton(EasySms::class, function ($app) {
-        //     return new EasySms(config('easysms'));
-        // });
-
-        // $this->app->alias(EasySms::class, 'easysms');
-
-        $this->app->singleton('easysms', function ($app) {
+        $this->app->singleton(EasySms::class, function ($app) {
             return new EasySms(config('easysms'));
         });
+
+        $this->app->alias(EasySms::class, 'easysms');
+        // $this->app->singleton('easysms', function ($app) {
+        //     return new EasySms(config('easysms'));
+        // });
     }
 }
